@@ -18,15 +18,29 @@ public class CommonUser extends User {
         return new CommonUser(aName, aDocument, anEmail, aPassword);
     }
 
-    public void transferAmount(final BigDecimal value, final User user) {
+    public void transferAmount(final BigDecimal value, final User payee) {
         if (Objects.isNull(value) || BigDecimal.ZERO.compareTo(value) > 0 || super.getAmount().compareTo(value) < 0) {
             return;
         }
-        user.addAmount(value);
+        payee.addAmount(value);
         subtractAmount(value);
     }
 
     public CPF getDocument() {
         return document;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        CommonUser that = (CommonUser) o;
+        return Objects.equals(getDocument(), that.getDocument());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getDocument());
     }
 }
